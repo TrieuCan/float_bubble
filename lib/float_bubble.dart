@@ -11,15 +11,20 @@ class FloatBubble extends StatefulWidget {
   ///this method use for hide widget
   ///
   final bool show;
+  final double? maxY;
+  final double? minY;
 
   ///set init position widget
   ///
   final Alignment initialAlignment;
 
-  FloatBubble(
-      {required this.child,
-      this.show = true,
-      this.initialAlignment = Alignment.bottomRight});
+  FloatBubble({
+    required this.child,
+    this.show = true,
+    this.initialAlignment = Alignment.bottomRight,
+    this.maxY,
+    this.minY,
+  });
 
   @override
   FloatBubbleState createState() => FloatBubbleState();
@@ -83,9 +88,8 @@ class FloatBubbleState extends State<FloatBubble>
     final width = size.width;
     final height = size.height;
 
-    final maxY = height - kBottomNavigationBarHeight * 2;
-    const midY = 60;
-    const minY = 40;
+    final maxY = widget.maxY ?? (height - kBottomNavigationBarHeight * 2);
+    final minY = widget.minY ?? kBottomNavigationBarHeight;
 
     setState(() {
       if (dx > (width / 2) && dy > maxY) {
@@ -94,7 +98,7 @@ class FloatBubbleState extends State<FloatBubble>
           (details.delta.dx / (width / 2)),
           details.delta.dy / (height / 2),
         );
-      } else if (dx > (width / 2) && dy > midY && dy < maxY) {
+      } else if (dx > (width / 2) && dy > minY && dy < maxY) {
         dragEndAlignment = Alignment(
             1, dragBeginAlignment.y + details.delta.dy / (height / 2));
         dragBeginAlignment += Alignment(
@@ -113,7 +117,7 @@ class FloatBubbleState extends State<FloatBubble>
           (details.delta.dx / (width / 2)),
           details.delta.dy / (height / 2),
         );
-      } else if (dx < (width / 2) && dy > midY && dy < maxY) {
+      } else if (dx < (width / 2) && dy > minY && dy < maxY) {
         dragEndAlignment = Alignment(
           -1,
           dragBeginAlignment.y + details.delta.dy / (size.height / 2),
