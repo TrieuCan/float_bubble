@@ -91,6 +91,10 @@ class FloatBubbleState extends State<FloatBubble>
     final maxY = widget.maxY ?? (height - kBottomNavigationBarHeight * 2);
     final minY = widget.minY ?? kBottomNavigationBarHeight;
 
+    print('postion dx : $dx');
+    print('postion dy : $dx');
+    print('----------------------');
+
     setState(() {
       if (dx > (width / 2) && dy > maxY) {
         dragEndAlignment = Alignment(1, 1);
