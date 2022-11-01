@@ -15,6 +15,7 @@ class FloatBubble extends StatefulWidget {
   ///set init position widget
   ///
   final Alignment initialAlignment;
+
   FloatBubble(
       {required this.child,
       this.show = true,
@@ -77,17 +78,42 @@ class FloatBubbleState extends State<FloatBubble>
 
   void onPanUpdate(DragUpdateDetails details) {
     final size = MediaQuery.of(context).size;
+    final dx = details.localPosition.dx;
+    final dy = details.localPosition.dy;
+    final width = size.width;
+    final height = size.height;
+
+    final maxY = height - kBottomNavigationBarHeight * 2;
+    const midY = 60;
+    const minY = 40;
+
     setState(() {
-      if (details.localPosition.dx > (size.width / 2)) {
-        dragEndAlignment = Alignment(
-          1,
-          dragBeginAlignment.y + details.delta.dy / (size.height / 2),
-        );
+      if (dx > (width / 2) && dy > maxY) {
+        dragEndAlignment = Alignment(1, 1);
         dragBeginAlignment += Alignment(
-          (details.delta.dx / (size.width / 2)),
-          details.delta.dy / (size.height / 2),
+          (details.delta.dx / (width / 2)),
+          details.delta.dy / (height / 2),
         );
-      } else {
+      } else if (dx > (width / 2) && dy > midY && dy < maxY) {
+        dragEndAlignment = Alignment(
+            1, dragBeginAlignment.y + details.delta.dy / (height / 2));
+        dragBeginAlignment += Alignment(
+          (details.delta.dx / (width / 2)),
+          details.delta.dy / (height / 2),
+        );
+      } else if (dx > (width / 2) && dy < minY) {
+        dragEndAlignment = Alignment(1, -1);
+        dragBeginAlignment += Alignment(
+          (details.delta.dx / (width / 2)),
+          details.delta.dy / (height / 2),
+        );
+      } else if (dx < (width / 2) && dy > maxY) {
+        dragEndAlignment = Alignment(-1, 1);
+        dragBeginAlignment += Alignment(
+          (details.delta.dx / (width / 2)),
+          details.delta.dy / (height / 2),
+        );
+      } else if (dx < (width / 2) && dy > midY && dy < maxY) {
         dragEndAlignment = Alignment(
           -1,
           dragBeginAlignment.y + details.delta.dy / (size.height / 2),
@@ -95,6 +121,12 @@ class FloatBubbleState extends State<FloatBubble>
         dragBeginAlignment += Alignment(
           (details.delta.dx / (size.width / 2)),
           (details.delta.dy / (size.height / 2)),
+        );
+      } else if (dx < (width / 2) && dy < minY) {
+        dragEndAlignment = Alignment(-1, -1);
+        dragBeginAlignment += Alignment(
+          (details.delta.dx / (width / 2)),
+          details.delta.dy / (height / 2),
         );
       }
     });
