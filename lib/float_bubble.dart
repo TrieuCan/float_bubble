@@ -92,7 +92,7 @@ class FloatBubbleState extends State<FloatBubble>
     final minY = widget.minY ?? kBottomNavigationBarHeight;
 
     print('postion dx : $dx');
-    print('postion dy : $dx');
+    print('postion dy : $dy');
     print('----------------------');
 
     setState(() {
