@@ -116,7 +116,8 @@ class FloatBubbleState extends State<FloatBubble>
           details.delta.dy / (height / 2),
         );
       } else if (dx < (width / 2) && dy > maxY) {
-        dragEndAlignment = Alignment(-1, 1);
+        dragEndAlignment = Alignment(
+            -1, dragBeginAlignment.y + details.delta.dy / (height / 2));
         dragBeginAlignment += Alignment(
           (details.delta.dx / (width / 2)),
           details.delta.dy / (height / 2),
